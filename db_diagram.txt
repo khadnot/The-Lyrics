@@ -1,0 +1,25 @@
+Table Users >>> Basic user information
+id |  username  |  password  |  first_name  |  last_name  |       email       | 
+---+------------+------------+--------------+-------------+-------------------+
+1  | kenbo156   | ku7H89iEoQ | Kenn         | Harding     | k3nb0@gmail.com   |
+2  | lmpbizkit  | hdyU458eaB | Linda        | Pearson     | linnaloo@aol.com  |
+3  | kurlylegs  | 57hKwVx042 | Kameron      | Davis       | realkd@gmail.com  |
+
+Table Genres >>> genre_id is the actual genre id for MusixMatch API
+id |    genre    |  genre_id
+---+-------------+-----------+
+1  | hip-hop     | 18        |
+2  | pop         | 14        |
+3  | rock        | 21        |
+4  | alternative | 20	     |
+5  | country     | 6         |
+6  | folk        | 1289      |
+7  | r&b         | 15        |
+8  | edm         | 17        |
+
+Table Scores >>> foreign key (user_id) REFERENCES Users(id)
+user_id | score
+--------+-------+
+1       | 7890  |
+2       | 8465  |
+3       | 6640  |
