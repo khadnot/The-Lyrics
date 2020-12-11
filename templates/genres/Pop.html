@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<h1>Pop Songs</h1>
+
+<div class="grid2x2">
+    {% for song in rand_songs %}
+        <a class="box" href="/lyrics/{{ song.song_id }}">
+            <div id="song"><span><strong>{{ song.song_name }}</strong></span> by <span>{{ song.song_artist }}</span></div>
+        </a>
+    {% endfor %}
+</div>
+
+{% endblock %}

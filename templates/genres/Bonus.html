@@ -1,0 +1,13 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<h1>The Greatest Song of All Time!!</h1>
+
+<div class="grid2x2">
+    <a class="box" href="/lyrics/{{ rand_songs.song_id }}">
+        <div id="song"><span><strong>{{ rand_songs.song_artist }}</strong></span><span>{{ rand_songs.song_name }}</span></div>
+    </a>
+</div>
+
+{% endblock %}

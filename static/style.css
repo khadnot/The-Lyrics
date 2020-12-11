@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto:wght@500&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+h1 {
+  font-family: 'Permanent Marker', cursive;
+  text-align: center;
+}
+
+p#title {
+  font-family: 'Roboto', sans-serif;
+  padding: 40px;
+}
+
+.grid4x4 {
+  min-height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.grid4x4 > a {
+  display: flex; 
+  flex-basis: calc(25% - 40px);  
+  justify-content: center;
+  flex-direction: row;
+  border: 2px solid green;
+  margin: 20px;
+}
+
+.grid4x4 > a > div {
+  display: flex;
+  width: auto;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.grid2x2 {
+  min-height: 40%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.grid2x2 > a {
+  display: flex; 
+  flex-basis: calc(25% - 40px);  
+  justify-content: center;
+  flex-direction: row;
+  border: 2px solid green;
+  margin: 20px;
+}
+
+.grid2x2 > a > div {
+  display: flex;
+  width: auto;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+#guess {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid green;
+}
+
+#lyrics {
+  text-align: center;
+}

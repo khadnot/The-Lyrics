@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %}
+<h1>{{ song.song_name }}</h1>
+
+<div id="lyrics">
+
+  <p id="line1" name="line1">{{ line1 }}</p>
+  <p id="line2" name="line2">{{ line2 }}</p>
+  <p id="line3" name="line3">{{ line3 }}</p>
+  <p id ="ghost">{{ ghost }}</p>
+  <p>"End of the song"</p>
+  <h5 id="myArr" name="myArr">{{ arr }}</h5>
+
+  <form method="GET" id="word-form">
+    <input id="guess" type="text" name="guess">
+  </form>
+
+  <p>Timer:  <span id="timer"></span></p>
+
+  <p>Score:  <span id="score"></span></p>
+
+  <a href="/genres" class="btn btn-outline-success">Click for Genres</a>
+  
+</div>
+
+{% endblock %}

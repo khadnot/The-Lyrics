@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Welcome</h1>
+<h1>to</h1>
+<h1>Don't Forget</h1>
+<h1>The Lyrics</h1>
+
+<p id="title">
+    Rules:  First you'll pick a genre, then you'll pick from two random songs in 
+    that genre. Whichever song you pick will have some lyrics missing. You'll have 1 minute to 
+    compete the missing lyrics. The faster you complete the lyrics, the more points you'll 
+    earn. If after 1 minute you haven't finished the lyrics you'll be automatically sent back 
+    to the genres page to select your next genre. Once you've chosen a song from all genres, 
+    if your score is 50,000 or higher, you'll be given a bonus song. Some say it's the 
+    greatest song of all time!! Good Luck and enjoy!</p>
+
+<div class="text-center">
+  <a href="/genres" class="btn btn-outline-success text-center btn-lg w-50">Let's Play!</a>
+</div>
+
+{% endblock %}
