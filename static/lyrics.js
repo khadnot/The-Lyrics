@@ -1,26 +1,24 @@
-const genres = document.querySelectorAll('.genre');
+const genres = document.querySelectorAll('.box.genre');
 
 genres.forEach(genre => {
   const boxClass = sessionStorage.getItem(genre.id);
   if (boxClass !== null) {
     genre.className = boxClass;
   }
-  console.log(genre.id)
   genre.onclick = function() {
     sessionStorage.setItem(genre.id, 'box genre completed');
   }
+  if ($('.box.genre').length === $('.box.genre.completed').length) {
+    alert("You've completed the game bud!!");
+  }
 });
 
-/*if (complete) {
-      //$(this).addClass(localStorage.getItem('class'));
-    } */
 // **********************This works just uncomment these lines!!**********************
 let lyrics = document.getElementById('line3').innerText // string of text
 let blank = lyrics.replace(/[A-z]/gi, '_'); // blank string '___ _ __'
 let words = lyrics.split(/\s*\b\s*/); // aray of words ['word', 'word', 'word'], split punctuation
 let sauce = blank.split(/\s*\b\s*/); // blank array ['___', '__', '___']
-let genresBtn = document.getElementById('genres')
-let count = 20;
+let genresBtn = document.getElementById('genres');
 // regex v.2 = .replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ")
 // regex v.3 = .split(/\s*\b\s*/)
 document.getElementById('guess').focus();
@@ -71,18 +69,22 @@ document.addEventListener('keydown', event => {
 // -------------Code for Timer/Score--------------------->>>>>>>>
 
 let counter = setInterval(timer, 1000);
+let count = 20;
+let score = localStorage.getItem('score') || 10000;
 
-let ghost = document.getElementById('ghost').innerText
-
-let score = 1000;
+if (score !== null) {
+  localStorage.setItem('score', '50000');
+}
+// let points = document.getElementById('score').innerHTML;
 
 function timer() {
 
   count --;
-  score -= 20;
+  score -= 50;
 
   if (!blank.includes("_")) {
     clearInterval(counter);
+    localStorage.setItem('score', $('#score').html());
     setTimeout(function () {
       genresBtn.style.visibility = 'visible';
       alert("WINNER WINNER CHICKEN DINNER!");
@@ -91,15 +93,13 @@ function timer() {
 
   if (count <= 0) {
     clearInterval(counter);
+    localStorage.setItem('score', $('#score').html());
     setTimeout(function() {
       genresBtn.style.visibility = 'visible';
       alert("Times UP BUCKO!");
     }, 500);
   };
-  
-  document.getElementById("timer").innerHTML = count;
-  document.getElementById("score").innerHTML = score;
+
+  document.getElementById('timer').innerHTML = count;
+  document.getElementById('score').innerHTML = score;
 }
-
-// ----------Code for Score-------------------->>>>
-
