@@ -129,10 +129,10 @@ def get_songs(genre):
   except ValueError:
     rand_songs = Song.query.join(Genre).filter(Genre.genre == 'Bonus').first()
 
-  return render_template(f'/genres/{genre}.html', rand_songs=rand_songs)
+  return render_template(f'/genres/{genre}.html', rand_songs=rand_songs, genre=genre)
 
-@app.route('/lyrics/<int:song_id>')
-def get_lyrics(song_id):
+@app.route('/genres/<string:genre>/<int:song_id>')
+def get_lyrics(genre, song_id):
 
   song = Song.query.filter_by(song_id=song_id).first()
 
@@ -155,7 +155,7 @@ def get_lyrics(song_id):
     arr.append(lyric)
 
   return render_template('lyrics.html', line1=line1, line2=line2, 
-                          line3=line3, ghost=ghost, arr=arr, song=song)
+                          line3=line3, ghost=ghost, arr=arr, song=song, genre=genre)
 
 '''
 t_id = '13846989' # Around the World by Daft Punk

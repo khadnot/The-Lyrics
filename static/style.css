@@ -30,6 +30,7 @@ p#title {
   flex-direction: row;
   border: 2px solid green;
   margin: 20px;
+  background-color: rgb(207, 230, 238);
 }
 
 .grid4x4 > a > div {
@@ -54,6 +55,7 @@ p#title {
   flex-direction: row;
   border: 2px solid green;
   margin: 20px;
+  background-color: rgb(207, 230, 238);
 }
 
 .grid2x2 > a > div {
@@ -72,4 +74,11 @@ p#title {
 
 #lyrics {
   text-align: center;
+}
+
+a.box.genre.completed {
+  background-color: rgb(58, 57, 57);
+  border: 2px solid black;
+  color: rgb(97, 96, 96);
+  pointer-events: none;
 }

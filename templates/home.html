@@ -4,7 +4,7 @@
 
 <div class="grid4x4">
     {% for genre in genres %}
-        <a class="box" href="/genres/{{genre.genre}}">
+        <a class="box genre" id='{{ genre.genre }}' href="/genres/{{genre.genre}}">
             <div id="genre">{{ genre.genre }}</div>
         </a>
     {% endfor %}
