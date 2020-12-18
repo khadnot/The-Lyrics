@@ -1,3 +1,5 @@
+const BASE_URL = "http://localhost:5000"
+
 const genres = document.querySelectorAll('.box.genre');
 
 genres.forEach(genre => {
@@ -9,7 +11,33 @@ genres.forEach(genre => {
     sessionStorage.setItem(genre.id, 'box genre completed');
   }
   if ($('.box.genre').length === $('.box.genre.completed').length) {
-    alert("You've completed the game bud!!");
+    let score = localStorage.getItem("score");
+    const url = "/game-over";
+    //alert(`You scored: ${score} points!!`);
+    /*async function getScore() {
+      const endGameRes = axios.post(`${BASE_URL}/game-over`, {
+        score
+      });
+      let myScore = endGameRes
+      console.log(myScore);
+    }
+    getScore();*/
+    $.ajax({
+        url: url,
+        type : "POST",
+        data : {"score":score},
+        success: function(data) {
+          console.log(score); // this shows the localStorage score!!
+            if (data.redirect) {
+              console.log(score) // this shows the localStorage score!!
+              score = data.score
+              window.location.href = data.redirect;
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
   }
 });
 

@@ -48,6 +48,10 @@ class User(db.Model):
         unique=True,
     )
 
+    high_score = db.Column(
+        db.Integer,
+    )
+
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}>"
 
@@ -68,6 +72,17 @@ class User(db.Model):
         )
 
         db.session.add(user)
+        return user
+
+    @classmethod
+    def score(cls, username, high_score):
+        """ High score for user """
+
+        user = cls.query.filter_by(username=username).first()
+
+        user.high_score = high_score
+        db.session.commit()
+
         return user
 
     @classmethod

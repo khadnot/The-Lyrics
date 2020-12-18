@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, flash, json, g
+from flask import Flask, render_template, request, redirect, session, flash, json, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from  sqlalchemy.sql.expression import func
@@ -157,31 +157,22 @@ def get_lyrics(genre, song_id):
   return render_template('lyrics.html', line1=line1, line2=line2, 
                           line3=line3, ghost=ghost, arr=arr, song=song, genre=genre)
 
-'''
-t_id = '13846989' # Around the World by Daft Punk
-  #t_id_1 = '201234497' # WAP by Cardi B and Megan The Stallion
-  #t_id_2 = '84684086' # Human Nature by Michael Jackson
-  #t_id_3 = '99769120' # Ni**as in Paris by The Throne
-  #t_id_4 = '86095153' # Day 'N' Nite by Kid Cudi
+@app.route('/game-over', methods=['GET', 'POST'])
+def game_over():
 
-  url = BASE_URL+f'{t_id}&apikey={api_key}'
+  if request.method == 'POST':
+    return jsonify(dict(redirect='/game-over'))
 
-  response = requests.get(url)
-  data = json.loads(response.content)
-  lyrics = data['message']['body']['lyrics']['lyrics_body']
+  if CURR_USER_KEY in session:
+    user = User.query.get(session[CURR_USER_KEY])
 
-  line1 = lyrics.split('\n')[0]
-  line2 = lyrics.split('\n')[1]
-  line3 = lyrics.split('\n')[2]
-  ghost = re.sub("[A-z]", '_', line3)
+  response = requests.get('http://127.0.0.1:5000/genres')
+  print(response.status_code)
 
+  #user.high_score = score
+  #db.session.commit()
 
-  arr = []
-  lyrics = line3.split(' ')
-  lyrics = [''.join(c for c in s if c not in string.punctuation) for s in lyrics]
-  for lyric in lyrics:
-    arr.append(lyric)
+  #high_score = user.high_score
+  name = user.username
 
-  return render_template('index.html', line1=line1, line2=line2, line3=line3, ghost=ghost, arr=arr)
-
-'''
+  return render_template('endgame.html', name=name)
