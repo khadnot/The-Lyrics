@@ -2,6 +2,9 @@
 
 {% block content %}
 
+<h1>Genres</h1>
+<!--<p>Here is your score: {{ res }}</p>-->
+
 <div class="grid4x4">
     {% for genre in genres %}
         <a class="box genre" id='{{ genre.genre }}' href="/genres/{{genre.genre}}">

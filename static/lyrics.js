@@ -11,35 +11,37 @@ genres.forEach(genre => {
     sessionStorage.setItem(genre.id, 'box genre completed');
   }
   if ($('.box.genre').length === $('.box.genre.completed').length) {
-    let score = localStorage.getItem("score");
-    const url = "/game-over";
-    //alert(`You scored: ${score} points!!`);
-    /*async function getScore() {
-      const endGameRes = axios.post(`${BASE_URL}/game-over`, {
-        score
-      });
-      let myScore = endGameRes
-      console.log(myScore);
-    }
-    getScore();*/
-    $.ajax({
-        url: url,
-        type : "POST",
-        data : {"score":score},
-        success: function(data) {
-          console.log(score); // this shows the localStorage score!!
-            if (data.redirect) {
-              console.log(score) // this shows the localStorage score!!
-              score = data.score
-              window.location.href = data.redirect;
-            }
-        },
-        error: function(error) {
-            console.log(error);
-        }
-    });
+    playerScore = localStorage.getItem('score')
+    axios({
+      method: 'post',
+      url: '/jsonres',
+      headers: { "Content-Type" : "application/json" },
+      data: {
+        "score" : parseInt(playerScore)
+      }
+    }).then(function (response) {
+      //data = JSON.parse(data.config.data); // this is the part i need config.data
+      data = JSON.parse(response.config.data);
+      res = response
+      console.log(data['score']);
+      console.log(res)
+      console.log("********************")
+      let pop = res.data
+      console.log(pop['score'])
+      return (response.data);
+    }).catch((err) => {
+      console.log("NO SOUP FOR YOU!!", err)
+    })
+    window.location = '/game-over'
   }
 });
+
+$('#game-over').on('click', function() {
+  console.log("end button clicked!!")
+  sessionStorage.clear();
+  localStorage.clear();
+  window.location.href = "/genres";
+})
 
 // **********************This works just uncomment these lines!!**********************
 let lyrics = document.getElementById('line3').innerText // string of text
@@ -93,6 +95,7 @@ document.addEventListener('keydown', event => {
     event.preventDefault();
   }
 });
+
 
 // -------------Code for Timer/Score--------------------->>>>>>>>
 

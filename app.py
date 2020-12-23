@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, session, flash, json, g, jsonify
+from flask import Flask, render_template, request, redirect, session, flash, json, g, jsonify, Response
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from  sqlalchemy.sql.expression import func
 import re
 import random
+import os
 import requests
 import string
 from keys import api_key
@@ -111,14 +112,13 @@ def home_page():
 
   return render_template('title.html')
 
-@app.route('/genres')
+@app.route('/genres', methods=["GET", "POST"])
 def get_genres():
 
   genres = Genre.query.all() # lists all the genres
 
   return render_template('home.html', genres=genres) # page with all the genres listed
 
-# Work on this route. On genre click return songs from that genre.
 @app.route('/genres/<string:genre>')
 def get_songs(genre):
 
@@ -157,22 +157,38 @@ def get_lyrics(genre, song_id):
   return render_template('lyrics.html', line1=line1, line2=line2, 
                           line3=line3, ghost=ghost, arr=arr, song=song, genre=genre)
 
-@app.route('/game-over', methods=['GET', 'POST'])
-def game_over():
+@app.route('/jsonres', methods=["POST"])
+def jsonres():
+  
+  if CURR_USER_KEY in session:
+    user = User.query.get(session[CURR_USER_KEY])
 
-  if request.method == 'POST':
-    return jsonify(dict(redirect='/game-over'))
+    response = request.json
+    score = response['score']
+
+    user.high_score = score
+    db.session.commit()
+
+  return jsonify({ 'score' : score })
+
+@app.route('/game-over', methods=["GET", "POST"])
+def game_over():
 
   if CURR_USER_KEY in session:
     user = User.query.get(session[CURR_USER_KEY])
 
-  response = requests.get('http://127.0.0.1:5000/genres')
-  print(response.status_code)
+    name = user.username
 
-  #user.high_score = score
-  #db.session.commit()
+    score = user.high_score
+
+    return render_template('endgame.html', name=name, score=score)
+
+  #response = request.get_json()
+  #data = json.loads(response.text)
+
+  #user = User.query.get(sesion['username'])
 
   #high_score = user.high_score
-  name = user.username
+  #name = user.username
 
-  return render_template('endgame.html', name=name)
+  return render_template('endgame.html')
