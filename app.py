@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, json, g, jsonify, Response
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
-from  sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import func
 import re
 import random
 import os
@@ -166,9 +166,28 @@ def jsonres():
     response = request.json
     score = response['score']
 
+    '''if score > user.high_score:
+      user.high_score = score # update score in database
+      db.session.commit()
+
+      return jsonify({ 'score' : score })
+    
+    if user.high_score == None:
+      user.high_score = score
+      db.session.commit()
+
+      return jsonify({ 'score' : score})'''
+
     user.high_score = score
     db.session.commit()
 
+    return jsonify({ 'score' : score })
+
+  response = request.json
+  score = response['score']
+
+  #flash("Please Sign-in to save score", "info")
+  #return redirect('/login')
   return jsonify({ 'score' : score })
 
 @app.route('/game-over', methods=["GET", "POST"])
@@ -177,18 +196,13 @@ def game_over():
   if CURR_USER_KEY in session:
     user = User.query.get(session[CURR_USER_KEY])
 
-    name = user.username
+    players = User.query.order_by(User.high_score.desc()).limit(5)
 
-    score = user.high_score
+    pos = [1, 2, 3, 4, 5]
 
-    return render_template('endgame.html', name=name, score=score)
+    top_five = zip(pos, players)
 
-  #response = request.get_json()
-  #data = json.loads(response.text)
+    return render_template('endgame.html', top_five=top_five)
 
-  #user = User.query.get(sesion['username'])
-
-  #high_score = user.high_score
-  #name = user.username
-
-  return render_template('endgame.html')
+  flash("Please Sign-in to save score", "info")
+  return redirect('/login')

@@ -36,12 +36,24 @@ genres.forEach(genre => {
   }
 });
 
+function clearStorage() {
+  sessionStorage.clear();
+  localStorage.clear();
+}
+
 $('#game-over').on('click', function() {
   console.log("end button clicked!!")
   sessionStorage.clear();
   localStorage.clear();
   window.location.href = "/genres";
 })
+
+$(document).ready(function() {
+  $('#login').click(clearStorage);
+  $('#signup').click(clearStorage)
+})
+
+
 
 // **********************This works just uncomment these lines!!**********************
 let lyrics = document.getElementById('line3').innerText // string of text
@@ -100,8 +112,8 @@ document.addEventListener('keydown', event => {
 // -------------Code for Timer/Score--------------------->>>>>>>>
 
 let counter = setInterval(timer, 1000);
-let count = 20;
-let score = localStorage.getItem('score') || 10000;
+let count = 3;
+let score = localStorage.getItem('score') || 50000;
 
 if (score !== null) {
   localStorage.setItem('score', '50000');
@@ -119,7 +131,7 @@ function timer() {
     setTimeout(function () {
       genresBtn.style.visibility = 'visible';
       alert("WINNER WINNER CHICKEN DINNER!");
-    }, 200);
+    }, 100);
   };
 
   if (count <= 0) {
@@ -128,7 +140,7 @@ function timer() {
     setTimeout(function() {
       genresBtn.style.visibility = 'visible';
       alert("Times UP BUCKO!");
-    }, 500);
+    }, 100);
   };
 
   document.getElementById('timer').innerHTML = count;
