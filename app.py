@@ -9,7 +9,7 @@ import requests
 import string
 from keys import api_key
 
-from forms import UserAddForm, LoginForm
+from forms import AddUserForm, EditUserForm, LoginForm
 from models import db, connect_db, User, Genre, Song
 
 CURR_USER_KEY = "curr_user"
@@ -53,7 +53,7 @@ def signup():
 
   Create new user and add user to database. Redirect to home page."""
 
-  form = UserAddForm()
+  form = AddUserForm()
 
   if form.validate_on_submit():
     try:
@@ -66,13 +66,15 @@ def signup():
       )
       db.session.commit()
 
+      do_login(user)
+      flash(f"Hello, {user.first_name}!", "success")
+      session['user_id'] = user.id
+      session['username'] = user.username
+      return redirect('/')
+
     except IntegrityError:
       flash("Username already taken", 'danger')
-      return render_template('users/signup.html', form=form)
-
-    do_login(user)
-
-    return redirect('/')
+      return redirect('/signup')
 
   else:
     return render_template('users/signup.html', form=form)
@@ -91,11 +93,45 @@ def login():
       do_login(user)
       flash(f"Hello, {user.first_name}!", "success")
       session['user_id'] = user.id
+      session['username'] = user.username
       return redirect('/')
     
     flash("Invalid credentials.", "danger")
 
   return render_template('users/login.html', form=form)
+
+@app.route('/edit', methods=["GET", "POST"])
+def edit_user():
+  """Edit User Info"""
+
+  form = EditUserForm()
+
+  user = User.query.get(session[CURR_USER_KEY])
+
+  if form.validate_on_submit():
+    username=form.username.data or user.username
+    first_name=form.first_name.data or user.first_name
+    last_name=form.last_name.data or user.last_name
+    email=form.email.data or user.email
+    password=form.password.data or user.password
+
+    if user:
+      user.username=username
+      user.first_name=first_name
+      user.last_name=last_name
+      user.email=email
+      user.password=password
+
+      db.session.commit()
+
+      flash("User Info Saved", "success")
+      return redirect('/genres')
+
+  # else:
+  #   flash("Incorrect Password", "danger")
+  #   return redirect('/edit')
+
+  return render_template('users/edit.html', form=form)
 
 @app.route('/logout')
 def logout():
@@ -166,18 +202,6 @@ def jsonres():
     response = request.json
     score = response['score']
 
-    '''if score > user.high_score:
-      user.high_score = score # update score in database
-      db.session.commit()
-
-      return jsonify({ 'score' : score })
-    
-    if user.high_score == None:
-      user.high_score = score
-      db.session.commit()
-
-      return jsonify({ 'score' : score})'''
-
     user.high_score = score
     db.session.commit()
 
@@ -186,8 +210,6 @@ def jsonres():
   response = request.json
   score = response['score']
 
-  #flash("Please Sign-in to save score", "info")
-  #return redirect('/login')
   return jsonify({ 'score' : score })
 
 @app.route('/game-over', methods=["GET", "POST"])
@@ -196,13 +218,17 @@ def game_over():
   if CURR_USER_KEY in session:
     user = User.query.get(session[CURR_USER_KEY])
 
+    name = user.first_name
+
+    score = user.high_score
+
     players = User.query.order_by(User.high_score.desc()).limit(5)
 
-    pos = [1, 2, 3, 4, 5]
+    pos = [*range(1, 6)]
 
     top_five = zip(pos, players)
 
-    return render_template('endgame.html', top_five=top_five)
+    return render_template('endgame.html', name=name, score=score, top_five=top_five)
 
   flash("Please Sign-in to save score", "info")
   return redirect('/login')

@@ -18,7 +18,12 @@
 
   <p>Score:  <span id="score"></span></p>
 
+
+  {% if song.song_id != 80666284 %}
   <a href="/genres" class="btn btn-outline-success" id="genres">Go back to Genres</a>
+  {% else %}
+  <a href="/game-over" class="btn btn-outline-success" id="genres">Go to High Scores</a>
+  {% endif %}
   
 </div>
 

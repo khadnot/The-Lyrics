@@ -2,6 +2,8 @@ const BASE_URL = "http://localhost:5000"
 
 const genres = document.querySelectorAll('.box.genre');
 
+let score = localStorage.getItem('score') || 50000;
+
 genres.forEach(genre => {
   const boxClass = sessionStorage.getItem(genre.id);
   if (boxClass !== null) {
@@ -32,7 +34,11 @@ genres.forEach(genre => {
     }).catch((err) => {
       console.log("NO SOUP FOR YOU!!", err)
     })
-    window.location = '/game-over'
+    if (playerScore > 48000) {
+      window.location = '/genres/Bonus'
+    } else {
+      window.location = '/game-over'
+    }
   }
 });
 
@@ -65,8 +71,6 @@ let genresBtn = document.getElementById('genres');
 // regex v.3 = .split(/\s*\b\s*/)
 document.getElementById('guess').focus();
 document.getElementById('guess').select();
-
-// compare without punctuation for guess
 
 genresBtn.style.visibility = 'hidden';
 console.log(words);
@@ -112,8 +116,7 @@ document.addEventListener('keydown', event => {
 // -------------Code for Timer/Score--------------------->>>>>>>>
 
 let counter = setInterval(timer, 1000);
-let count = 3;
-let score = localStorage.getItem('score') || 50000;
+let count = 6;
 
 if (score !== null) {
   localStorage.setItem('score', '50000');
