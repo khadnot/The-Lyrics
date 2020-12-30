@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from sqlalchemy.sql.expression import func
+from flask_bcrypt import Bcrypt
 import re
 import random
 import os
@@ -25,6 +26,8 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
+
+bcrypt = Bcrypt()
 
 @app.before_request
 def add_user_to_g():
@@ -104,32 +107,39 @@ def login():
 def edit_user():
   """Edit User Info"""
 
-  form = EditUserForm()
+  if CURR_USER_KEY in session:
 
-  user = User.query.get(session[CURR_USER_KEY])
+    form = EditUserForm()
 
-  if form.validate_on_submit():
-    username=form.username.data or user.username
-    first_name=form.first_name.data or user.first_name
-    last_name=form.last_name.data or user.last_name
-    email=form.email.data or user.email
-    password=form.password.data or user.password
+    user = User.query.get(session[CURR_USER_KEY])
 
     if user:
-      user.username=username
-      user.first_name=first_name
-      user.last_name=last_name
-      user.email=email
-      user.password=password
 
-      db.session.commit()
+      if form.validate_on_submit():
 
-      flash("User Info Saved", "success")
-      return redirect('/genres')
+        user.username=form.username.data or user.username
+        user.first_name=form.first_name.data or user.first_name
+        user.last_name=form.last_name.data or user.last_name
+        user.email=form.email.data or user.email
 
-  # else:
-  #   flash("Incorrect Password", "danger")
-  #   return redirect('/edit')
+        password = form.password.data
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+        user.password=hashed_pwd
+
+        db.session.commit()
+
+        session['username'] = user.username
+
+        flash("User Info Saved", "success")
+        return redirect('/genres')
+
+    else:
+      flash("Please Login or Sign-up", "danger")
+      return redirect('/login')
+
+  else:
+    flash("Please Login or Sign-up", "danger")
+    return redirect('/login')
 
   return render_template('users/edit.html', form=form)
 
@@ -151,9 +161,14 @@ def home_page():
 @app.route('/genres', methods=["GET", "POST"])
 def get_genres():
 
-  genres = Genre.query.all() # lists all the genres
+  if CURR_USER_KEY in session:
 
-  return render_template('home.html', genres=genres) # page with all the genres listed
+    genres = Genre.query.all()
+
+    return render_template('home.html', genres=genres)
+
+  flash("Please Login or Sign-up to save score", "danger")
+  return redirect('/login')
 
 @app.route('/genres/<string:genre>')
 def get_songs(genre):
@@ -195,20 +210,24 @@ def get_lyrics(genre, song_id):
 
 @app.route('/jsonres', methods=["POST"])
 def jsonres():
-  
+
   if CURR_USER_KEY in session:
     user = User.query.get(session[CURR_USER_KEY])
 
     response = request.json
     score = response['score']
 
-    user.high_score = score
+    user.score = score
     db.session.commit()
 
-    return jsonify({ 'score' : score })
+    if score >= user.high_score:
+      user.high_score = score
+      db.session.commit()
 
-  response = request.json
-  score = response['score']
+    return jsonify({ 'score' : score })
+  
+  else:
+    return
 
   return jsonify({ 'score' : score })
 
@@ -220,7 +239,7 @@ def game_over():
 
     name = user.first_name
 
-    score = user.high_score
+    score = user.score
 
     players = User.query.order_by(User.high_score.desc()).limit(5)
 

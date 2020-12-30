@@ -18,9 +18,16 @@
           {{ field(placeholder=field.label.text, class="form-control") }}
         {% endfor %}
 
-        <button class="btn btn-primary btn-block btn-lg" id="login">Log in</button>
+        <button class="btn btn-info btn-block btn-lg" id="login">Log in</button>
       </form>
     </div>
+  </div>
+
+  <hr>
+
+  <h4 class="join-message">Don't have an account??</h4>
+  <div class="row justify-content-md-center">
+    <a class="btn btn-info btn-lg" id="login" href='/signup'>Sign-up Here!</a>
   </div>
 
 {% endblock %}

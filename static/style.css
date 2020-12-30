@@ -10,6 +10,10 @@ h1 {
   text-align: center;
 }
 
+h3 {
+  text-align: center;
+}
+
 h4 {
   font-family: 'Roboto', sans-serif;
   text-align: center;
@@ -21,7 +25,7 @@ p#title {
 }
 
 .grid4x4 {
-  min-height: 100%;
+  min-height: 60%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -46,7 +50,7 @@ p#title {
 }
 
 .grid2x2 {
-  min-height: 40%;
+  min-height: 30%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -86,4 +90,16 @@ a.box.genre.completed {
   border: 2px solid black;
   color: rgb(97, 96, 96);
   pointer-events: none;
+}
+
+.endgame {
+  padding: 20px;
+}
+
+.highscore {
+  font-family: 'Permanent Marker', cursive;
+}
+
+.table {
+  width: 60%;
 }

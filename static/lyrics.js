@@ -116,7 +116,7 @@ document.addEventListener('keydown', event => {
 // -------------Code for Timer/Score--------------------->>>>>>>>
 
 let counter = setInterval(timer, 1000);
-let count = 6;
+let count = 4;
 
 if (score !== null) {
   localStorage.setItem('score', '50000');
