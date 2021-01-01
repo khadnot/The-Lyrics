@@ -20,5 +20,5 @@ pip install -r requirements.txt
 
 ## Tech Stack Used
 
-**Backend** - Python, Flask, Axios, WTForms, SQLAlchemy
+**Backend** - Python, Flask, Axios, WTForms, SQLAlchemy  
 **Frontend** - JavaScript, Jinja, Bootstrap, CSS
