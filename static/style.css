@@ -24,6 +24,12 @@ p#title {
   padding: 40px;
 }
 
+.box.genre #genre {
+  font-family: 'Permanent Marker', cursive;
+  color: black;
+  font-size: 3em;
+}
+
 .grid4x4 {
   min-height: 60%;
   display: flex;
@@ -73,6 +79,10 @@ p#title {
   justify-content: center;
   flex-direction: column;
   text-align: center;
+}
+
+p#line4 {
+  display: none;
 }
 
 #guess {

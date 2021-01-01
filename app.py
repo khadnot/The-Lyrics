@@ -5,9 +5,7 @@ from sqlalchemy.sql.expression import func
 from flask_bcrypt import Bcrypt
 import re
 import random
-import os
 import requests
-import string
 from keys import api_key
 
 from forms import AddUserForm, EditUserForm, LoginForm
@@ -180,7 +178,13 @@ def get_songs(genre):
   except ValueError:
     rand_songs = Song.query.join(Genre).filter(Genre.genre == 'Bonus').first()
 
-  return render_template(f'/genres/{genre}.html', rand_songs=rand_songs, genre=genre)
+  if genre == 'Disney':
+    return render_template(f'/genres/Disney.html', rand_songs=rand_songs, genre=genre)
+
+  if genre == 'Bonus':
+    return render_template(f'/genres/Bonus.html', rand_songs=rand_songs, genre=genre)
+
+  return render_template(f'/genres/genre.html', rand_songs=rand_songs, genre=genre)
 
 @app.route('/genres/<string:genre>/<int:song_id>')
 def get_lyrics(genre, song_id):
@@ -196,17 +200,11 @@ def get_lyrics(genre, song_id):
   line1 = lyrics.split('\n')[0]
   line2 = lyrics.split('\n')[1]
   line3 = lyrics.split('\n')[2]
-  ghost = re.sub("[A-z]", '_', line3)
-
-
-  arr = []
-  lyrics = line3.split(' ')
-  lyrics = [''.join(c for c in s if c not in string.punctuation) for s in lyrics]
-  for lyric in lyrics:
-    arr.append(lyric)
+  line4 = lyrics.split('\n')[3]
+  ghost = re.sub("[A-z]", '_', line4)
 
   return render_template('lyrics.html', line1=line1, line2=line2, 
-                          line3=line3, ghost=ghost, arr=arr, song=song, genre=genre)
+                          line3=line3, line4=line4, ghost=ghost, song=song, genre=genre)
 
 @app.route('/jsonres', methods=["POST"])
 def jsonres():
@@ -227,7 +225,7 @@ def jsonres():
     return jsonify({ 'score' : score })
   
   else:
-    return
+    return jsonify({ 'score' : score })
 
   return jsonify({ 'score' : score })
 

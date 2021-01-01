@@ -25,16 +25,13 @@ genres.forEach(genre => {
       //data = JSON.parse(data.config.data); // this is the part i need config.data
       data = JSON.parse(response.config.data);
       res = response
-      console.log(data['score']);
-      console.log(res)
-      console.log("********************")
       let pop = res.data
       console.log(pop['score'])
       return (response.data);
     }).catch((err) => {
-      console.log("NO SOUP FOR YOU!!", err)
+      console.log("Something went wrong ", err)
     })
-    if (playerScore > 48000) {
+    if (playerScore >= 38000) {
       window.location = '/genres/Bonus'
     } else {
       window.location = '/game-over'
@@ -62,18 +59,18 @@ $(document).ready(function() {
 
 
 // **********************This works just uncomment these lines!!**********************
-let lyrics = document.getElementById('line3').innerText // string of text
+let lyrics = document.getElementById('line4').innerText // string of text
 let blank = lyrics.replace(/[A-z]/gi, '_'); // blank string '___ _ __'
-let words = lyrics.split(/\s*\b\s*/); // aray of words ['word', 'word', 'word'], split punctuation
-let sauce = blank.split(/\s*\b\s*/); // blank array ['___', '__', '___']
+const punctuation = /[!"#$%&()*+,./:;<=>?@[\]^_`{|}~]/g;
+let words = lyrics.replace(punctuation, '').split(' '); // aray of words ['word', 'word', 'word'], split punctuation
+let sauce = blank.split(' '); // blank array ['___', '__', '___']
 let genresBtn = document.getElementById('genres');
-// regex v.2 = .replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ")
-// regex v.3 = .split(/\s*\b\s*/)
+
 document.getElementById('guess').focus();
 document.getElementById('guess').select();
 
 genresBtn.style.visibility = 'hidden';
-console.log(words);
+
 document.addEventListener('keydown', event => {
   if (event.code === 'Space') {
     event.preventDefault();
@@ -95,12 +92,11 @@ document.addEventListener('keydown', event => {
     });
 
     matchIdx.forEach(idx => {
-      sauce[idx] = words[idx];
+      sauce[idx] = lyrics.split(' ')[idx];
     });
 
     blank = sauce.join(' ');
     document.getElementById('ghost').innerText = blank;
-    console.log(blank)
     document.getElementById('word-form').reset();
   };
 });
@@ -116,12 +112,11 @@ document.addEventListener('keydown', event => {
 // -------------Code for Timer/Score--------------------->>>>>>>>
 
 let counter = setInterval(timer, 1000);
-let count = 4;
+let count = 60;
 
 if (score !== null) {
   localStorage.setItem('score', '50000');
 }
-// let points = document.getElementById('score').innerHTML;
 
 function timer() {
 
@@ -133,7 +128,8 @@ function timer() {
     localStorage.setItem('score', $('#score').html());
     setTimeout(function () {
       genresBtn.style.visibility = 'visible';
-      alert("WINNER WINNER CHICKEN DINNER!");
+      $('#guess')[0].disabled = true;
+      alert("YOU REMEMBERED THE LYRICS! GOOD JOB!");
     }, 100);
   };
 
@@ -142,7 +138,9 @@ function timer() {
     localStorage.setItem('score', $('#score').html());
     setTimeout(function() {
       genresBtn.style.visibility = 'visible';
-      alert("Times UP BUCKO!");
+
+      $('#guess')[0].disabled = true;
+      alert("I guess you forgot the lyrics this time.");
     }, 100);
   };
 
