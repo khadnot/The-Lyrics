@@ -5,3 +5,11 @@ Here is my web application based on the popular game show Don't Forget the Lyric
 ## API used
 
 I used the Musixmatch API (https://developer.musixmatch.com) to create my app. A free API Key is needed to clone app.
+
+## Installation
+
+Use the package manager pip to install from requirements.txt.
+
+```bash
+pip install -r requirements.txt 
+```
