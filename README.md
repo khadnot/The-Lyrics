@@ -19,12 +19,12 @@ pip install -r requirements.txt
 ```  
 Import DatabaseSongs.csv to create database of songs.
 
-'''bash
+```bash
 COPY songs(song_artist, song_name, song_id, genre_id)
 FROM '\DatabaseSongs.csv'
 DELIMITER ','
 CSV HEADER;
-'''  
+```
 
 ## Tech Stack Used
 
