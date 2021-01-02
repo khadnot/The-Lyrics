@@ -12,11 +12,19 @@ I used the Musixmatch API (https://developer.musixmatch.com) to create my app. A
 
 ## Installation
 
-Use the package manager pip to install from requirements.txt.
+Use the package manager pip to install requirements.txt.
 
 ```bash
 pip install -r requirements.txt 
-```
+```  
+Import DatabaseSongs.csv to create database of songs.
+
+'''bash
+COPY songs(song_artist, song_name, song_id, genre_id)
+FROM '\DatabaseSongs.csv'
+DELIMITER ','
+CSV HEADER;
+'''  
 
 ## Tech Stack Used
 
