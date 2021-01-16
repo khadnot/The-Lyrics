@@ -4,7 +4,7 @@ Here is my web application based on the popular game show Don't Forget the Lyric
 
 ## Heroku
 
-To play the game click here: [Don't Forget The Lyrics!](https://dont-forget-the-lyrics.herokuapp.com/){:target="_blank"}
+To play the game click here: <a href="https://dont-forget-the-lyrics.herokuapp.com/" target="_blank">Don't Forget The Lyrics!</a>
 
 ## Gameplay
 
