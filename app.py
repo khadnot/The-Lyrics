@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, request, redirect, session, flash, json, g, jsonify, Response
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
@@ -15,7 +17,9 @@ CURR_USER_KEY = "curr_user"
 BASE_URL = 'https://api.musixmatch.com/ws/1.1/track.lyrics.get?format=json&track_id='
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///lyrics'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+  os.environ.get('DATABASE_URL', 'postgres:///lyrics'))
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = "CH1LD15HG4MB1N0"
