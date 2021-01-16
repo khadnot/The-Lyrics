@@ -1,5 +1,3 @@
-const BASE_URL = "http://localhost:5000"
-
 const genres = document.querySelectorAll('.box.genre');
 
 let score = localStorage.getItem('score') || 50000;
@@ -22,7 +20,6 @@ genres.forEach(genre => {
         "score" : parseInt(playerScore)
       }
     }).then(function (response) {
-      //data = JSON.parse(data.config.data); // this is the part i need config.data
       data = JSON.parse(response.config.data);
       res = response
       let pop = res.data
@@ -56,9 +53,6 @@ $(document).ready(function() {
   $('#signup').click(clearStorage)
 })
 
-
-
-// **********************This works just uncomment these lines!!**********************
 let lyrics = document.getElementById('line4').innerText // string of text
 let blank = lyrics.replace(/[A-z]/gi, '_'); // blank string '___ _ __'
 const punctuation = /[!"#$%&()*+,./:;<=>?@[\]^_`{|}~]/g;

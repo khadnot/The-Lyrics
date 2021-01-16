@@ -159,14 +159,9 @@ def home_page():
 @app.route('/genres', methods=["GET", "POST"])
 def get_genres():
 
-  if CURR_USER_KEY in session:
+  genres = Genre.query.all()
 
-    genres = Genre.query.all()
-
-    return render_template('home.html', genres=genres)
-
-  flash("Please Login or Sign-up to save score", "danger")
-  return redirect('/login')
+  return render_template('home.html', genres=genres)
 
 @app.route('/genres/<string:genre>')
 def get_songs(genre):
@@ -247,5 +242,4 @@ def game_over():
 
     return render_template('endgame.html', name=name, score=score, top_five=top_five)
 
-  flash("Please Sign-in to save score", "info")
-  return redirect('/login')
+  return render_template('guestgame.html')
